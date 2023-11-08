@@ -1,0 +1,141 @@
+﻿@page "{handler?}"
+@using Rap_Blog.CoreLayer.Utilities
+@model IndexModel
+@{
+    ViewData["TitleBar"] = "درباره کتاب";
+    var largePost = Model.MainPageData.SpacialPosts.First();
+    var smallPost = Model.MainPageData.SpacialPosts.Where(f => f.Id != largePost.Id).Take(4);
+
+}
+
+<!-- Featured Posts Grid -->
+<section class="featured-posts-grid">
+    <div class="container">
+        <div class="row row-8">
+
+            <div class="col-lg-6">
+
+                <!-- Small post -->
+                @foreach (var item in smallPost)
+                {
+                    <div class="featured-posts-grid__item featured-posts-grid__item--sm">
+                        <article class="entry card post-list featured-posts-grid__entry">
+                            <div class="entry__img-holder post-list__img-holder card__img-holder" style="background-image: url(@Directories.GetPostImage(@item.ImageName)">
+                                <a asp-page="Post" asp-route-slug="@item.Slug" class="thumb-url"></a>
+                                <img src="@Directories.GetPostImage(@item.ImageName)" alt="" class="entry__img d-none">
+                                @if (item.SubCategory != null)
+                                {
+                                    <a asp-page="Search" asp-route-categorySlug="@item.SubCategory.Slug" class="entry__meta-category entry__meta-category--label entry__meta-category--align-in-corner entry__meta-category--violet">@item.SubCategory.Title</a>
+
+                                }
+                                else
+                                {
+                                    <a asp-page="Search" asp-route-categorySlug="@item.Category.Slug" class="entry__meta-category entry__meta-category--label entry__meta-category--align-in-corner entry__meta-category--violet">@item.Category.Title</a>
+
+                                }
+                            </div>
+
+                            <div class="entry__body post-list__body card__body">
+                                <h2 class="entry__title">
+                                    <a asp-page="Post" asp-route-slug="@item.Slug">@item.Title</a>
+                                </h2>
+                                <ul class="entry__meta">
+                                    <li class="entry__meta-author">
+                                        <span>نویسنده:</span>
+                                        <a>@item.User.FullName</a>
+                                    </li>
+                                    <li class="entry__meta-date">
+                                        @item.CreationDate.Date.ToShortDateString()
+                                    </li>
+                                </ul>
+                            </div>
+                        </article>
+                    </div> <!-- end post -->
+
+                }
+
+            </div> <!-- end col -->
+
+            <div class="col-lg-6">
+
+                <!-- Large post -->
+                <div class="featured-posts-grid__item featured-posts-grid__item--lg">
+                    <article class="entry card featured-posts-grid__entry">
+                        <div class="entry__img-holder card__img-holder">
+                            <a asp-page="Post" asp-route-slug="@largePost.Slug">
+                                <img src="@Directories.GetPostImage(@largePost.ImageName)" alt="" class="entry__img">
+                            </a>
+                            @if(largePost.SubCategory != null)
+                            {
+                                <a asp-page="Search" asp-route-categoryslug="@largePost.SubCategory.Slug" class="entry__meta-category entry__meta-category--label entry__meta-category--align-in-corner entry__meta-category--green">@largePost.SubCategory.Title</a>
+                            }
+                            else
+                            {
+                                <a asp-page="Search" asp-route-categorySlug="@largePost.Category.Slug" class="entry__meta-category entry__meta-category--label entry__meta-category--align-in-corner entry__meta-category--green">@largePost.Category.Title</a>
+
+                            }
+                        </div>
+
+                        <div class="entry__body card__body">
+                            <h2 class="entry__title">
+                                <a href="single-post.html">@largePost.Title</a>
+                            </h2>
+                            <ul class="entry__meta">
+                                <li class="entry__meta-author">
+                                    <span>نویسنده:</span>
+                                    <a>@largePost.User.FullName</a>
+                                </li>
+                                <li class="entry__meta-date">
+                                    @largePost.CreationDate.Date.ToShortDateString()
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+                </div> <!-- end large post -->
+            </div>
+
+        </div>
+    </div>
+</section> <!-- end featured posts grid -->
+
+<div class="main-container container pt-24" id="main-container">
+
+    <!-- Content -->
+    <div class="row">
+
+        <!-- Posts -->
+        <div class="col-lg-8 blog__content">
+        <partial name="Shared/_LatestPosts" model="@Model.MainPageData.LatestPosts"/>
+
+
+        </div> <!-- end posts -->
+        <!-- Sidebar -->
+        <aside class="col-lg-4 sidebar sidebar--right">
+            <div id="popular_posts"></div>
+            <aside class="widget widget_categories">
+                <h4 class="widget-title">دسته بندی نوشته ها</h4>
+                <ul>
+                    @foreach (var category in Model.MainPageData.Categories.Where(f=>f.IsMainCategory))
+                    {
+                        <li>
+                            <a asp-page="Search" asp-route-categorySlug="@category.Slug">
+                                @category.Title
+                                <span class="categories-count">@category.PostChild</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </aside>
+
+        </aside>
+    </div> <!-- content secondary -->
+
+    </div> <!-- end content -->
+    <!-- Ad Banner 728 -->
+
+<div class="row">
+
+
+
+
+</div>

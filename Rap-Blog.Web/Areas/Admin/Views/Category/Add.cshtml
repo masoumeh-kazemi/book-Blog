@@ -1,0 +1,39 @@
+﻿@model Rap_Blog.Web.Areas.Admin.Models.Categories.CreateCategoryViewModel
+@{
+    ViewData["Selected"] = "category";
+    ViewData["Title"] = "افزودن دسته بندی";
+
+}
+<section class="content-header">
+    <h1>@ViewData["Title"]</h1>
+    <ol class="breadcrumb">
+        <li><a href="/Admin/Home/Index"><i class="fa fa-dashboard"></i>خانه</a></li>
+        <li><a href="/Admin/Category/Index">دسته بندی ها</a></li>
+        <li><a class="active">@ViewData["Title"]</a></li>
+    </ol>
+</section>
+
+<section class="content">
+    <form class="box box-info" method="post" asp-area="Admin" asp-controller="Category" asp-action="Add">
+        <div class="box-body row">
+            <div class="col-md-6">
+                @Html.EditorFor(f=>f.Title)
+            </div>
+
+            <div class="col-md-6">
+                @Html.EditorFor(f=>f.Slug)
+            </div>
+
+            <div class="col-md-6">
+                @Html.EditorFor(f=>f.MetaTag)
+            </div>
+
+            <div class="col-md-6">
+                @Html.EditorFor(f=>f.MetaDescription)
+            </div>
+        </div>
+        <div class="box-footer">
+            <button class="btn btn-success" type="submit">ثبت اطلاعات</button>
+        </div>
+    </form>
+</section>

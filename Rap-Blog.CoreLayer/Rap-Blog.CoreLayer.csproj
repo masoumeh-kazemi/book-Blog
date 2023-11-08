@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>Rap_Blog.CoreLayer</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="DTOs\Categories\" />
+    <Folder Include="DTOs\Postcomments\" />
+    <Folder Include="DTOs\Users\" />
+    <Folder Include="Services\Categories\" />
+    <Folder Include="Services\Comments\" />
+    <Folder Include="Services\Users\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Rap-Blog.DataLayer\Rap-Blog.DataLayer.csproj" />
+  </ItemGroup>
+
+</Project>

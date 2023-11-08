@@ -1,0 +1,88 @@
+﻿@model List<Rap_Blog.CoreLayer.DTOs.Categories.CategoryDto>
+@using Rap_Blog.CoreLayer.Services.Categories
+@inject ICategoryService CategoryService;
+@{
+    var categories = CategoryService.GetAllCategories();
+}
+<!-- Sidenav -->
+<header class="sidenav" id="sidenav">
+
+    <!-- close -->
+    <div class="sidenav__close">
+        <button class="sidenav__close-button" id="sidenav__close-button" aria-label="close sidenav">
+            <i class="ui-close sidenav__close-icon"></i>
+        </button>
+    </div>
+
+    <!-- Nav -->
+    <nav class="sidenav__menu-container">
+        <ul class="sidenav__menu" role="menubar">
+            <li>
+                <a href="#" class="sidenav__menu-url">صفحه اصلی</a>
+            </li>
+            @foreach (var category in Model.Where(p => p.ParentId == null))
+            {
+                var hasChild = Model.Any(p => p.ParentId == category.Id);
+                if (hasChild)
+                {
+                    <li>
+                        <a class="sidenav__menu-url" href="/search?categorySlug=@category.Slug">@category.Title</a>
+                        <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
+
+                        <ul class="sidenav__menu-dropdown">
+                            @foreach (var child in Model.Where(p => p.ParentId == category.Id))
+                            {
+                                <li>
+                                    <a class="sidenav__menu-url" href="/search?categorySlug=@child.Slug">@child.Title</a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <a class="sidenav__menu-url" href="/search?categorySlug=@category.Slug">@category.Title</a>
+                    </li>
+                }
+            }
+
+            
+            
+            
+            
+
+            @*            @foreach (var category in categories.Where(f => f.ParentId == null))
+            {
+                if (categories.Any(f=>f.ParentId == category.Id))
+                {
+                    <li>
+                        <a asp-page="Search" asp-route-categorySlug="@category.Slug" class="sidenav__menu-url">@category.Title</a>
+                        <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
+                        @foreach (var subCategory in categories.Where(f => f.ParentId == category.Id))
+                        {
+                            <ul class="sidenav__menu-dropdown">
+                                <li><a asp-page="Search"asp-route-categorySlug="@subCategory.Slug" class="sidenav__menu-url">@subCategory.Title</a></li>
+
+                            </ul>
+                        }
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <a href="#" class="sidenav__menu-url">@category.Title</a>
+                    </li>
+                }
+            }
+*@
+            
+            
+
+            <!-- Categories -->
+
+
+        </ul>
+    </nav>
+
+</header> <!-- end sidenav -->

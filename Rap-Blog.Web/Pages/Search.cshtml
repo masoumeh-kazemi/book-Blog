@@ -1,0 +1,85 @@
+﻿@page "{handler?}"
+@using Rap_Blog.CoreLayer.DTOs.Categories
+@using Rap_Blog.CoreLayer.Services.Categories
+@using Rap_Blog.CoreLayer.Utilities
+@model Rap_Blog.Web.Pages.SearchModel
+@inject ICategoryService CategoryService;
+@{
+    CategoryDto category = null;
+    var search = "";
+    if (!string.IsNullOrEmpty(Model.Filter.FilterParams.CategorySlug))
+    {
+        category = CategoryService.GetCategoryBySlug(Model.Filter.FilterParams.CategorySlug);
+        if (category != null)
+        {
+            search = category.Title;
+        }
+
+    }
+    else
+    {
+        search = Model.Filter.FilterParams.Title ?? "مقالات سایت";
+    }
+
+    ViewData["Title"] = search;
+    ViewData["TitleBar"] = search;
+}
+
+
+@*@section MetaTag{
+
+    if(category != null)
+    {
+    <meta name="description" content="@category.MetaDescription">
+    <meta name="og:description" content="@category.MetaDescription  ">
+    }*@
+
+@*}*@
+<div class="main-container container pt-40" id="main-container">
+
+    <!-- Content -->
+    <div class="row">
+
+        <!-- Posts -->
+        <div class="col-lg-8 blog__content mb-72">
+            @if (search != null)
+            {
+                <h1 class="page-title"> نتایج جست و جو برای : @search</h1>
+
+            }
+            <div id="ajaxSearch">
+                <partial name="Shared/_SearchView" model="@Model.Filter" />
+
+            </div>
+            <!-- Pagination -->
+
+        </div> <!-- end posts -->
+        <!-- Sidebar -->
+        <aside class="col-lg-4 sidebar sidebar--right" id="popular_posts">
+        </aside> <!-- end sidebar -->
+
+    </div> <!-- end content -->
+</div> <!-- end main container -->
+<!-- Footer -->
+@section Scripts{
+    <script>
+        function ajaxPagination(pageId) {
+            const params = new URLSearchParams(window.location.search);
+            var categorySlug = '';
+            var q = '';
+            if (params.has('categorySlug')) {
+                categorySlug = params.get("categorySlug");
+            }
+            if (params.has('q')) {
+                q = params.get("q");
+            }
+
+            $.ajax({
+                url: `/search/Pagination?pageId=${pageId}&q=${q}&categorySlug=${categorySlug}`,
+                type: "get",
+            }).done(function (data) {
+                $("#ajaxSearch").html(data);
+            });
+        }
+    </script>
+}
